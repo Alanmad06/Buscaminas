@@ -25,6 +25,7 @@ public class Visual extends javax.swing.JFrame {
     private int numCol=0;
    private  int Minas = 0;
    private int Banderas =0;
+   private boolean PartidaPerdida ;
     
     JButton[][] botones;
     Tablero Tablero;
@@ -94,6 +95,7 @@ public class Visual extends javax.swing.JFrame {
                 botones[i][j].setEnabled(false);
                 Tablero.AbrirCasilla(i, j);
             }}
+                   PartidaPerdida=true;
                
             }
            
@@ -112,10 +114,14 @@ public class Visual extends javax.swing.JFrame {
             public void accept(Casilla t) {
                 ImageIcon icono = new ImageIcon("src/Img/bandera.png");
                 if(botones[t.getX()][t.getY()].getIcon()!=null){
+                    if(PartidaPerdida==false)
                     botones[t.getX()][t.getY()].setIcon(null);
+                    IncrementarBanderas();
                 }else{
-               
+               if(Banderas>0 && PartidaPerdida==false){
                botones[t.getX()][t.getY()].setIcon(icono);
+                DecrementarBanderas();
+               }
                 }
             }
             
@@ -207,6 +213,12 @@ public class Visual extends javax.swing.JFrame {
         
     }
     
+    public void DecrementarBanderas(){
+        Banderas--;
+    }
+    public void IncrementarBanderas(){
+        Banderas++;
+    }
     public void FlagClick(MouseEvent e){
         
        
@@ -215,6 +227,9 @@ public class Visual extends javax.swing.JFrame {
         int posFila = Integer.parseInt(coorBtn[0]);
         int posCol = Integer.parseInt(coorBtn[1]);
         Tablero.EventoParaPartidaGanada(posFila, posCol);
+       
+        
+        
       
         
         
@@ -324,6 +339,7 @@ public class Visual extends javax.swing.JFrame {
     }//GEN-LAST:event_ComboBDificultadActionPerformed
 
     public void SetJuego(int Filas , int Col , int Minas){
+        PartidaPerdida=false;
         QuitarJuego();
         setNumFilas(Filas);
            setNumCol(Col);
